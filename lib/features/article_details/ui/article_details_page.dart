@@ -36,9 +36,11 @@ class ArticleDetailsPage extends StatelessWidget {
             automaticallyImplyLeading: false,
             expandedHeight: 30.h,
             flexibleSpace: articleModel.headlineImageUrl.isEmpty
-                ? YoutubePlayer(
-                    controller: youtubePlayerController,
-                  )
+                ? articleModel.youtubeLink == null
+                    ? Image.asset('assets/images/Danik Shiv Time2-05.png')
+                    : YoutubePlayer(
+                        controller: youtubePlayerController,
+                      )
                 : Image.network(articleModel.headlineImageUrl),
           ),
           SliverToBoxAdapter(
