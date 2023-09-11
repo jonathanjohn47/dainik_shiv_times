@@ -1,37 +1,31 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dainik_shiv_times/core/app_colors.dart';
-import 'package:dainik_shiv_times/core/app_constants.dart';
 import 'package:dainik_shiv_times/helpers/date_time_helpers.dart';
 import 'package:dainik_shiv_times/models/article_model.dart';
 import 'package:dainik_shiv_times/models/category_model.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../article_details/ui/article_details_page.dart';
+import '../get_controllers/article_tab_get_controller.dart';
 
 class ArticlesTab extends StatelessWidget {
   final ArticleCategoryModel categoryModel;
 
-  const ArticlesTab({super.key, required this.categoryModel});
+  ArticlesTab({super.key, required this.categoryModel});
+
+  ArticleTabGetController getController = Get.put(ArticleTabGetController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder<QuerySnapshot>(
-          future: FirebaseFirestore.instance
-              .collection(AppConstants.articles)
-              .where('category', isEqualTo: categoryModel.toJson())
-              .get(),
+      body: FutureBuilder<List<ArticleModel>>(
+          future: getController.loadArticleFromRtdb(categoryModel.name),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              List<ArticleModel> allArticles = snapshot.data!.docs.map((e) {
-                return ArticleModel.fromJson(jsonDecode(jsonEncode(e.data())));
-              }).toList();
+              List<ArticleModel> allArticles = snapshot.data!;
               return Padding(
                 padding: EdgeInsets.symmetric(vertical: 8.0.sp),
                 child: allArticles.length < 5
@@ -47,8 +41,8 @@ class ArticlesTab extends StatelessWidget {
                               child: Column(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.sp),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.sp),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -65,18 +59,25 @@ class ArticlesTab extends StatelessWidget {
                                         ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(4.sp),
-                                            child: Image.network(
-                                              e.headlineImageUrl,
-                                              fit: BoxFit.cover,
-                                              width: 20.w,
-                                              height: 20.w,
-                                            )),
+                                            child: e.headlineImageUrl.isNotEmpty
+                                                ? Image.network(
+                                                    e.headlineImageUrl,
+                                                    fit: BoxFit.cover,
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/Danik Shiv Time2-05.png',
+                                                    fit: BoxFit.cover,
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                  )),
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.sp),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.sp),
                                     child: Row(
                                       children: [
                                         Text(
@@ -90,12 +91,18 @@ class ArticlesTab extends StatelessWidget {
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.sp),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.sp),
                                     child: Row(
                                       children: [
-                                        CircleAvatar(radius: 10.sp, backgroundImage: NetworkImage(e.publisher.profilePicLink),),
-                                        SizedBox(width: 2.w,),
+                                        CircleAvatar(
+                                          radius: 10.sp,
+                                          backgroundImage: NetworkImage(
+                                              e.publisher.profilePicLink),
+                                        ),
+                                        SizedBox(
+                                          width: 2.w,
+                                        ),
                                         Text(
                                           e.publisher.name,
                                           style: TextStyle(
@@ -136,12 +143,19 @@ class ArticlesTab extends StatelessWidget {
                                         ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(4.sp),
-                                            child: Image.network(
-                                              e.headlineImageUrl,
-                                              fit: BoxFit.cover,
-                                              width: 100.w,
-                                              height: 25.h,
-                                            )),
+                                            child: e.headlineImageUrl.isNotEmpty
+                                                ? Image.network(
+                                                    e.headlineImageUrl,
+                                                    fit: BoxFit.cover,
+                                                    width: 100.w,
+                                                    height: 25.h,
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/Danik Shiv Time2-05.png',
+                                                    fit: BoxFit.cover,
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                  )),
                                         SizedBox(
                                           height: 2.h,
                                         ),
@@ -188,8 +202,8 @@ class ArticlesTab extends StatelessWidget {
                               child: Wrap(
                                 children: [
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.sp),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.sp),
                                     child: Row(
                                       children: [
                                         Expanded(
@@ -206,18 +220,25 @@ class ArticlesTab extends StatelessWidget {
                                         ClipRRect(
                                             borderRadius:
                                                 BorderRadius.circular(4.sp),
-                                            child: Image.network(
-                                              e.headlineImageUrl,
-                                              fit: BoxFit.cover,
-                                              width: 20.w,
-                                              height: 20.w,
-                                            )),
+                                            child: e.headlineImageUrl.isNotEmpty
+                                                ? Image.network(
+                                                    e.headlineImageUrl,
+                                                    fit: BoxFit.cover,
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                  )
+                                                : Image.asset(
+                                                    'assets/images/Danik Shiv Time2-05.png',
+                                                    fit: BoxFit.cover,
+                                                    width: 20.w,
+                                                    height: 20.w,
+                                                  )),
                                       ],
                                     ),
                                   ),
                                   Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 16.sp),
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 16.sp),
                                     child: Row(
                                       children: [
                                         Text(
