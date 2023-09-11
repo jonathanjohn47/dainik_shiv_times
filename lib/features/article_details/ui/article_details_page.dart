@@ -35,7 +35,7 @@ class ArticleDetailsPage extends StatelessWidget {
             floating: true,
             automaticallyImplyLeading: false,
             expandedHeight: 30.h,
-            flexibleSpace: articleModel.youtubeLink != null
+            flexibleSpace: articleModel.headlineImageUrl.isEmpty
                 ? YoutubePlayer(
                     controller: youtubePlayerController,
                   )
