@@ -1,12 +1,13 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:dainik_shiv_times/core/app_colors.dart';
 import 'package:dainik_shiv_times/features/home/ui/articles_tab.dart';
 import 'package:dainik_shiv_times/features/search/ui/search_page.dart';
 import 'package:dainik_shiv_times/models/category_model.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../contact/ui/contact_page.dart';
+import '../../e_paper/ui/e_paper_page.dart';
 import '../get_controllers/home_page_get_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,9 +21,7 @@ class HomePage extends StatelessWidget {
       return DefaultTabController(
         length: getController.categories.length,
         child: Scaffold(
-
           appBar: AppBar(
-            
             titleSpacing: 0,
             title: Row(
               children: [
@@ -31,22 +30,11 @@ class HomePage extends StatelessWidget {
                   width: 30.w,
                 ),
                 const Spacer(),
-                MaterialButton(
-                  elevation: 4,
-                  onPressed: () {},
-                  child: Text('E-paper'),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(4.0.sp),
-                      side: BorderSide(
-                          color: AppColors.secondary, width: 1.5.sp)),
-                ),
                 IconButton(
                     onPressed: () {
                       Get.to(() => SearchPage());
                     },
                     icon: const Icon(Icons.search)),
-                IconButton(
-                    onPressed: () {}, icon: const Icon(Icons.notifications)),
               ],
             ),
           ),
@@ -193,12 +181,14 @@ class HomePage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(() => EPaperPage());
+                        },
                         icon: Icon(
-                          Icons.share,
+                          Icons.newspaper,
                           color: Colors.white,
                         )),
-                    Text('Share', style: TextStyle(color: Colors.white)),
+                    Text('E-Paper', style: TextStyle(color: Colors.white)),
                   ],
                 ),
               ],
